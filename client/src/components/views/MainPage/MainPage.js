@@ -10,6 +10,7 @@ import { getDetailSchedule } from "../../../_actions/user_actions";
 import { UploadOutlined } from "@ant-design/icons";
 import { Empty } from "antd";
 const { Title } = Typography;
+const ImportanceOptions = ["none", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"];
 
 function MainPage(props) {
   const user = props.user;
@@ -42,9 +43,11 @@ function MainPage(props) {
   };
 
   const deleteHandler = (scheduleId) => {
-    axios.post(`/api/schedules/delete?id=${scheduleId}`).then((response) => {
+    axios.delete(`/api/schedules/delete?id=${scheduleId}`).then((response) => {
       if (response.data.success) {
-        let body = {};
+        let body = {
+          filters: Filters,
+        };
         getSchedules(body);
       } else {
         alert("스케쥴을 삭제하는데 실패했습니다.");
@@ -55,15 +58,13 @@ function MainPage(props) {
   const updateHandler = (scheduleId) => {
     dispatch(getDetailSchedule(scheduleId)).then((response) => {
       if (response.payload.success) {
-        props.history.push("/update", response.payload);
-      } else {
+        props.history.push("/update");
       }
     });
   };
 
   const showFilteredResult = (filters) => {
     let body = {
-      _id: user.userData._id,
       filters: filters,
     };
 
@@ -96,33 +97,50 @@ function MainPage(props) {
       count += 1;
 
       return (
-        <Col lg={6} md={8} xs={24} key={index}>
+        <Col key={index}>
           <Card
-            extra={<a href={`/schedule/${schedule._id}`}>More</a>}
-            style={{ width: 300 }}
+            extra={
+              <a
+                href={`/schedule/${schedule._id}`}
+                style={{ fontSize: "20px" }}
+              >
+                More
+              </a>
+            }
+            style={{ width: 400, height: "220px" }}
             cover={
               <a href={`/schedule/${schedule._id}`}>
-                <span style={{ margin: "1rem" }}>{schedule.description}</span>
+                <span style={{ margin: "1rem", fontSize: "1rem" }}>
+                  {schedule.description}
+                </span>
               </a>
             }
             title={schedule.title}
           >
-            <p>
-              {schedule.specifiedDate}
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label>중요도 : </label>
-              {schedule.importance}/5
-            </p>
-            <span style={{ paddingRight: "3rem" }}>
-              {dday < 0 ? "D" + dday : dday === 0 ? "D-Day" : "기간만료"}
-            </span>
-            <Button
-              onClick={() => updateHandler(schedule._id)}
-              style={{ paddingRight: "1rem" }}
-            >
-              수정
-            </Button>
-            <Button onClick={() => deleteHandler(schedule._id)}>삭제</Button>
+            <div style={{ textAlign: "center" }}>
+              <p style={{ fontSize: "1rem" }}>
+                {schedule.specifiedDate}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>중요도 : </label>
+                {ImportanceOptions[`${schedule.importance}`]}
+              </p>
+              <span style={{ paddingRight: "3rem", fontSize: "1rem" }}>
+                {dday < 0 ? "D" + dday : dday === 0 ? "D-Day" : "기간만료"}
+              </span>
+              <Button
+                onClick={() => updateHandler(schedule._id)}
+                style={{ fontSize: "1rem" }}
+              >
+                수정
+              </Button>
+              &nbsp;
+              <Button
+                style={{ fontSize: "1rem" }}
+                onClick={() => deleteHandler(schedule._id)}
+              >
+                삭제
+              </Button>
+            </div>
           </Card>
         </Col>
       );

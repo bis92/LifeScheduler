@@ -7,6 +7,8 @@ import { getDetailSchedule } from "../../../_actions/user_actions";
 import moment from "moment";
 import { PC, Tablet, Tablet2, Mobile } from "./Sections/MediaQuery";
 
+const ImportanceOptions = ["none", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"];
+
 function DetailSchedulePage(props) {
   const scheduleId = props.match.params.scheduleId;
   const today = moment();
@@ -28,7 +30,7 @@ function DetailSchedulePage(props) {
   }, []);
 
   const clickHandler = () => {
-    axios.post(`/api/schedules/delete?id=${scheduleId}`).then((response) => {
+    axios.delete(`/api/schedules/delete?id=${scheduleId}`).then((response) => {
       if (response.data.success) {
         props.history.push("/main");
       } else {
@@ -41,7 +43,6 @@ function DetailSchedulePage(props) {
     dispatch(getDetailSchedule(scheduleId)).then((response) => {
       if (response.payload.success) {
         props.history.push("/update");
-      } else {
       }
     });
   };
@@ -119,7 +120,7 @@ function DetailSchedulePage(props) {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="중요도" style={{ fontSize: "1rem" }}>
-          {Schedule.importance}/5
+          {ImportanceOptions[`${Schedule.importance}`]}
         </Descriptions.Item>
       </Descriptions>
 

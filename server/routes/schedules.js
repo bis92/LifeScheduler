@@ -37,7 +37,7 @@ router.post("/getSchedules", (req, res) => {
     });
 });
 
-router.post("/delete", (req, res) => {
+router.delete("/delete", (req, res) => {
   let scheduleId = req.query.id;
 
   Schedule.findOneAndDelete({ _id: scheduleId })
@@ -66,7 +66,7 @@ router.post("/getDetailSchedule", (req, res) => {
   });
 });
 
-router.post("/updateSchedule", (req, res) => {
+router.put("/updateSchedule", (req, res) => {
   let variables = {
     writer: req.body.writer,
     _id: req.body._id,

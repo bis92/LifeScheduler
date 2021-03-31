@@ -31,8 +31,6 @@ function UpdateSchedulePage(props) {
   const [SpecifiedDate, setSpecifiedDate] = useState(Schedule.specifiedDate);
   const [Importance, setImportance] = useState(Schedule.importance);
 
-  useEffect(() => {}, []);
-
   const onChangeTitle = (event) => {
     setTitle(event.currentTarget.value);
   };
@@ -66,7 +64,7 @@ function UpdateSchedulePage(props) {
       importance: Importance,
     };
 
-    axios.post("/api/schedules/updateSchedule", body).then((response) => {
+    axios.put("/api/schedules/updateSchedule", body).then((response) => {
       if (response.data.success) {
         message.success("스케쥴을 성공적으로 수정했습니다.");
         setTimeout(() => {
