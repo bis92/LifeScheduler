@@ -6,7 +6,7 @@ import {
   LOGOUT_USER,
   GET_DETAIL_SCHEDULE,
 } from "./types";
-import { USER_SERVER } from "../components/Config.js";
+import { USER_SERVER, SCHEDULE_SERVER } from "../components/Config.js";
 
 export function registerUser(dataToSubmit) {
   const request = axios
@@ -57,7 +57,7 @@ export function getDetailSchedule(id) {
     scheduleId: id,
   };
   const request = axios
-    .post("/api/schedules/getDetailSchedule", body)
+    .post(`${SCHEDULE_SERVER}/getDetailSchedule`, body)
     .then((response) => response.data);
 
   return {

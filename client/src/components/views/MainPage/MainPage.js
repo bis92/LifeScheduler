@@ -107,7 +107,7 @@ function MainPage(props) {
                 More
               </a>
             }
-            style={{ width: 400, height: "220px" }}
+            style={{ width: 396 }}
             cover={
               <a href={`/schedule/${schedule._id}`}>
                 <span style={{ margin: "1rem", fontSize: "1rem" }}>
